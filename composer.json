@@ -1,6 +1,6 @@
 {
     "name": "xgbnl/response",
-    "description": "Laravel middleware responder.",
+    "description": "RESTFul style JSON responder.",
     "type": "library",
     "license": "MIT",
     "autoload": {

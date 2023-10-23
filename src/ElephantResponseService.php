@@ -4,7 +4,6 @@ namespace Elephant\Response;
 
 use Elephant\Response\Contacts\Factory;
 use Elephant\Response\Contacts\Responsable;
-use Elephant\Response\Contacts\Response;
 use Elephant\Response\Middleware\JsonConvertProcess;
 use Elephant\Response\Responses\ResponseFactory;
 use Illuminate\Contracts\Container\Container;
