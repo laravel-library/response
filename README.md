@@ -2,6 +2,11 @@
 
 > Support laravel.
 
+#### install
+```shell
+composer require xgbnl/response
+```
+
 #### response
 ```json
 {
