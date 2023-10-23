@@ -4,7 +4,7 @@
 
 #### install
 ```shell
-composer require xgbnl/response
+composer require xgbnl/response dev-main
 ```
 
 #### response
