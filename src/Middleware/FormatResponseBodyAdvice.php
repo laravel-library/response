@@ -6,13 +6,16 @@ namespace Elephant\Response\Middleware;
 
 use Closure;
 use Elephant\Response\Contacts\Responsable;
+use Elephant\Response\Converter\ArrayHttpMessageConverter;
 use Elephant\Response\Converter\Contacts\HttpMessageConverter;
 use Elephant\Response\Converter\StringHttpMessageConverter;
 use Elephant\Response\Converter\ThrowableHttpMessageConverter;
+use Elephant\Response\Converter\VoidHttpMessageConverter;
 use Illuminate\Contracts\Container\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 final readonly class FormatResponseBodyAdvice
 {
@@ -29,25 +32,40 @@ final readonly class FormatResponseBodyAdvice
         $response = $next($request);
 
         if ($response instanceof JsonResponse) {
-            return $response;
+            $response = $this->jsonResponseConvertToHttpResponse($response);
         }
 
-        $responder = $this->beforeBodyWrite($request, $response);
+        $responder = $this->beforeBodyWrite($response);
 
         return new JsonResponse($responder->toResponse());
     }
 
-    private function beforeBodyWrite(Request $request, Response|\Illuminate\Http\Response $response): Responsable
+    private function jsonResponseConvertToHttpResponse(JsonResponse $jsonResponse): Response|\Illuminate\Http\Response
+    {
+        $response = $this->container->get(\Illuminate\Http\Response::class);
+
+        $response->setContent($jsonResponse->original);
+
+        return $response;
+    }
+
+    private function beforeBodyWrite(Response|\Illuminate\Http\Response $response): Responsable
     {
         return $this->prepareHttpMessageConverter($response)
-            ->writeValueAsJsonResponse($request, $response)
-            ->toResponse();
+            ->writeValueAsJsonResponse($response);
     }
 
     private function prepareHttpMessageConverter(\Illuminate\Http\Response $response): HttpMessageConverter
     {
-        return is_null($response->exception)
-            ? $this->container->make(StringHttpMessageConverter::class)
-            : $this->container->make(ThrowableHttpMessageConverter::class);
+        $isThrowable = is_string($response->original) && ($response->exception instanceof Throwable);
+
+        $converter = match (true) {
+            $isThrowable                   => ThrowableHttpMessageConverter::class,
+            is_string($response->original) => StringHttpMessageConverter::class,
+            !is_null($response->original)  => ArrayHttpMessageConverter::class,
+            default                        => VoidHttpMessageConverter::class,
+        };
+
+        return $this->container->make($converter);
     }
 }
