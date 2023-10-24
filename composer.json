@@ -18,8 +18,8 @@
     },
     "extra": {
         "laravel": {
-            "prviders": [
-                "Elephant\\Response\\ElephantResponseService"
+            "providers": [
+                "Elephant\\Response\\ElephantResponseServiceProvider"
             ]
         }
     }

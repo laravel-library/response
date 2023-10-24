@@ -9,7 +9,7 @@ use Elephant\Response\Responses\ResponseFactory;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
-final class ElephantResponseService extends ServiceProvider
+final class ElephantResponseServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
