@@ -3,7 +3,6 @@
 namespace Elephant\Response\Response;
 
 use Elephant\Response\Contacts\Factory;
-use Elephant\Response\Contacts\Responsable;
 use Elephant\Response\Contacts\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,12 +23,5 @@ final class ResponderFactory implements Factory
             'DELETE'               => new NoContentResponse($data, $code),
             default                => new SuccessResponse($data, $code)
         };
-    }
-
-    public function setRequest(Request $request): Responsable
-    {
-        $this->request = $request;
-
-        return $this;
     }
 }

@@ -8,5 +8,5 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface HttpMessageConverter
 {
-    public function writeValueAsJsonResponse(Request $request, Response $body): Responsable;
+    public function writeValueAsJsonResponse(Response $body): Responsable;
 }

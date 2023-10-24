@@ -17,10 +17,8 @@ abstract readonly class AbstractHttpMessageConverter implements HttpMessageConve
         $this->factory = $factory;
     }
 
-    final public function writeValueAsJsonResponse(Request $request, Response $body): Responsable
+    final public function writeValueAsJsonResponse(Response $body): Responsable
     {
-        $this->factory->setRequest($request);
-
         return $this->write($body);
     }
 
