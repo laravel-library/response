@@ -26,7 +26,13 @@ final readonly class FormatResponseBodyAdvice
     public function handle(Request $request, Closure $next): JsonResponse
     {
 
-        $responder = $this->beforeBodyWrite($request, $next($request));
+        $response = $next($request);
+
+        if ($response instanceof JsonResponse) {
+            return $response;
+        }
+
+        $responder = $this->beforeBodyWrite($request, $response);
 
         return new JsonResponse($responder->toResponse());
     }
