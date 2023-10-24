@@ -2,11 +2,9 @@
 
 namespace Elephant\Response\Contacts;
 
-interface Response
+interface Response extends Responsable
 {
     public function message(): string;
 
     public function code(): int;
-
-    public function setResponse(\Symfony\Component\HttpFoundation\Response $response): Responsable;
 }

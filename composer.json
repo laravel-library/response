@@ -1,26 +1,27 @@
 {
-    "name": "xgbnl/response",
-    "description": "RESTFul style JSON responder.",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Elephant\\Response\\": "src/"
-        }
-    },
-    "minimum-stability": "dev",
-    "require": {
-        "php": "^8.2",
-        "symfony/http-foundation": "^6.3"
-    },
-    "require-dev": {
-        "illuminate/support": "^10.28"
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Elephant\\Response\\ElephantResponseServiceProvider"
-            ]
-        }
+  "name": "xgbnl/response",
+  "description": "RESTFul style JSON responder.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Elephant\\Response\\": "src/"
     }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^8.2",
+    "symfony/http-foundation": "^6.3"
+  },
+  "require-dev": {
+    "illuminate/support": "^10.28",
+    "illuminate/routing": "10.x-dev"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Elephant\\Response\\ElephantResponseServiceProvider"
+      ]
+    }
+  }
 }

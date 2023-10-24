@@ -3,10 +3,10 @@
 namespace Elephant\Response;
 
 use Elephant\Response\Contacts\Factory;
-use Elephant\Response\Contacts\Responsable;
-use Elephant\Response\Middleware\JsonConvertProcess;
-use Elephant\Response\Responses\ResponseFactory;
+use Elephant\Response\Middleware\FormatResponseBodyAdvice;
+use Elephant\Response\Response\ResponderFactory;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 final class ElephantResponseServiceProvider extends ServiceProvider
@@ -16,25 +16,18 @@ final class ElephantResponseServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             Factory::class,
-            fn(Container $container) => $container->make(ResponseFactory::class)
+            fn(Container $container) => $container->make(ResponderFactory::class)
         );
-
-        $this->app->singleton(Responsable::class, fn(Container $container) => $container->make(Responder::class));
     }
 
-    public function boot(): void
+    public function boot(Router $router): void
     {
-        $this->registerMiddleware('elephant.response', JsonConvertProcess::class);
+        $this->registerMiddleware('elephant.response', $router);
     }
 
-    protected function registerMiddleware(string $name, string $middleware): mixed
+    protected function registerMiddleware(string $name, Router $router): void
     {
-        $route = $this->app['router'];
-
-        if (method_exists($route, 'aliasMiddleware')) {
-            return $route->aliasMiddleware($name, $middleware);
-        }
-
-        return $route->middleware($name, $middleware);
+        $router->aliasMiddleware($name, FormatResponseBodyAdvice::class)
+            ->pushMiddlewareToGroup('api', $name);
     }
 }

@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Elephant\Response\Responses;
+namespace Elephant\Response\Response;
 
-use Elephant\Response\Responder;
+use Elephant\Response\Contacts\Response;
 
-final  class CreatedResponse extends Responder
+final class CreatedResponse  implements Response
 {
+    use Responder;
+
     public function message(): string
     {
         return "created";
