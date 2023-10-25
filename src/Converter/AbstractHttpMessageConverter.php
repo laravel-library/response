@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Elephant\Response\Converter;
 
-use Elephant\Response\Contacts\Factory;
-use Elephant\Response\Contacts\Responsable;
 use Elephant\Response\Converter\Contacts\HttpMessageConverter;
+use Elephant\Response\Response\Contacts\Factory;
+use Elephant\Response\Response\Contacts\Responsable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,8 +19,10 @@ abstract readonly class AbstractHttpMessageConverter implements HttpMessageConve
         $this->factory = $factory;
     }
 
-    final public function writeValueAsJsonResponse(Response $body): Responsable
+    final public function writeValueAsJsonResponse(Request $request, Response $body): Responsable
     {
+        $this->factory->setRequest($request);
+
         return $this->write($body);
     }
 

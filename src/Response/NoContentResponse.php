@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Elephant\Response\Response;
 
-use Elephant\Response\Contacts\Response;
+use Elephant\Response\Response\Contacts\Response;
 
 final class NoContentResponse implements Response
 {

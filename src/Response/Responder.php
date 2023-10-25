@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Elephant\Response\Response;
 
 use JetBrains\PhpStorm\ArrayShape;

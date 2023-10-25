@@ -2,7 +2,7 @@
 
 namespace Elephant\Response\Converter;
 
-use Elephant\Response\Contacts\Responsable;
+use Elephant\Response\Response\Contacts\Responsable;
 use Illuminate\Http\Response;
 
 final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageConverter

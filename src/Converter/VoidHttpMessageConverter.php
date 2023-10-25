@@ -2,10 +2,10 @@
 
 namespace Elephant\Response\Converter;
 
-use Elephant\Response\Contacts\Responsable;
+use Elephant\Response\Response\Contacts\Responsable;
 use Symfony\Component\HttpFoundation\Response;
 
-readonly class VoidHttpMessageConverter extends AbstractHttpMessageConverter
+final readonly class VoidHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
     protected function write(Response $body): Responsable
