@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 final readonly class VoidHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
+    #[\Override]
     protected function write(Response $body): Responsable
     {
         return $this->factory->toResponse();

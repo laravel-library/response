@@ -7,6 +7,7 @@ namespace Elephant\Response\Converter;
 use Elephant\Response\Converter\Contacts\HttpMessageConverter;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Response;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Throwable;
 
@@ -18,6 +19,7 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
     {
         $this->container = $container;
     }
+
 
     public function beforeBodyWrite(JsonResponse $jsonResponse): \Symfony\Component\HttpFoundation\Response|Response
     {

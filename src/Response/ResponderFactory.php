@@ -4,6 +4,7 @@ namespace Elephant\Response\Response;
 
 use Elephant\Response\Response\Contacts\Factory;
 use Elephant\Response\Response\Contacts\Response;
+use Override;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ResponderFactory implements Factory
@@ -16,6 +17,7 @@ final class ResponderFactory implements Factory
         $this->request = $request;
     }
 
+    #[Override]
     public function toResponse(mixed $data = null, int $code = 0): Response
     {
         return match ($this->request->getMethod()) {
@@ -25,6 +27,7 @@ final class ResponderFactory implements Factory
         };
     }
 
+    #[Override]
     public function setRequest(Request $request): void
     {
         $this->request = $request;

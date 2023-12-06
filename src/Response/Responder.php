@@ -20,6 +20,7 @@ trait  Responder
     }
 
     #[ArrayShape(['message' => 'string', 'code' => 'integer', 'data' => 'mixed'])]
+    #[\Override]
     public function toResponse(): array
     {
         $response = ['message' => $this->message(), 'code' => $this->code(), 'data' => null];

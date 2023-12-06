@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
+    #[\Override]
     protected function write(\Symfony\Component\HttpFoundation\Response|Response $body): Responsable
     {
 
