@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Elephant\Response\Response;
 
 use JetBrains\PhpStorm\ArrayShape;
+use Override;
 
 trait  Responder
 {
@@ -19,14 +20,14 @@ trait  Responder
         $this->code = $code;
     }
 
-    #[ArrayShape(['message' => 'string', 'code' => 'integer', 'data' => 'mixed'])]
-    #[\Override]
+    #[ArrayShape(['msg' => 'string', 'code' => 'integer', 'data' => 'mixed'])]
+    #[Override]
     public function toResponse(): array
     {
-        $response = ['message' => $this->message(), 'code' => $this->code(), 'data' => null];
+        $response = ['msg' => $this->message(), 'code' => $this->code(), 'data' => null];
 
         if (is_string($this->data)) {
-            $response['message'] = $this->data;
+            $response['msg'] = $this->data;
         } elseif (!is_null($this->data)) {
             $response['data'] = $this->data;
         }
