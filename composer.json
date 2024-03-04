@@ -11,11 +11,13 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^8.3.0",
-    "symfony/http-foundation": "^6.3"
-  },
-  "require-dev": {
-    "illuminate/support": "^10.28",
-    "illuminate/routing": "10.x-dev"
+    "symfony/http-foundation": "^6.3",
+    "illuminate/support": "^10.46",
+    "illuminate/routing": "^10.46",
+    "illuminate/database": "^10.46",
+    "illuminate/validation": "^10.46",
+    "illuminate/auth": "^10.46",
+    "illuminate/foundation": "^10.46"
   },
   "extra": {
     "laravel": {
