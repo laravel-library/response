@@ -3,33 +3,37 @@
 > Support laravel.
 
 #### install
+
 ```shell
 composer require xgbnl/response dev-main
 ```
 
-#### GET
+#### GET Method.
+
 ```json
 {
-  "message": "success",
+  "msg": "success",
   "code": 200,
   "data": null
 }
 ```
 
-#### POST、PATCH
+#### POST、PATCH Methods.
+
 ```json
 {
-    "message": "created",
-    "code": 201,
-    "data": null
+  "msg": "created",
+  "code": 201,
+  "data": null
 }
 ```
 
-#### DELETE
+#### DELETE Method.
+
 ```json
 {
-    "message": "noContent",
-    "code": 204,
-    "data": null
+  "msg": "noContent",
+  "code": 204,
+  "data": null
 }
 ```

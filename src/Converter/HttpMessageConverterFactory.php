@@ -20,7 +20,7 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
         $this->container = $container;
     }
 
-
+    #[Override]
     public function beforeBodyWrite(JsonResponse $jsonResponse): \Symfony\Component\HttpFoundation\Response|Response
     {
         $response = $this->container->get(Response::class);
@@ -30,6 +30,7 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
         return $response;
     }
 
+    #[Override]
     public function makeHttpMessageConverter(Response $response): HttpMessageConverter
     {
         return $this->container->make($this->getHttpMessageConverterClass($response));

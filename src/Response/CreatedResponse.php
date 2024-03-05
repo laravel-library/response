@@ -17,6 +17,7 @@ final class CreatedResponse  implements Response
         return "created";
     }
 
+    #[Override]
     public function code(): int
     {
         return 201;

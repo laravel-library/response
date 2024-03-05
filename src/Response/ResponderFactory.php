@@ -5,9 +5,9 @@ namespace Elephant\Response\Response;
 use Elephant\Response\Response\Contacts\Factory;
 use Elephant\Response\Response\Contacts\Response;
 use Illuminate\Contracts\Container\Container;
-use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
+use Override;
 
 final class ResponderFactory implements Factory
 {
@@ -16,9 +16,10 @@ final class ResponderFactory implements Factory
 
     private readonly Container $container;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Container $container)
     {
-        $this->request = $request;
+        $this->request   = $request;
+        $this->container = $container;
     }
 
     #[Override]

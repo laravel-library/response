@@ -9,6 +9,7 @@ use Elephant\Response\Response\Contacts\Factory;
 use Elephant\Response\Response\Contacts\Responsable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Override;
 
 abstract readonly class AbstractHttpMessageConverter implements HttpMessageConverter
 {
@@ -19,6 +20,7 @@ abstract readonly class AbstractHttpMessageConverter implements HttpMessageConve
         $this->factory = $factory;
     }
 
+    #[Override]
     final public function writeValueAsJsonResponse(Request $request, Response $body): Responsable
     {
         $this->factory->setRequest($request);

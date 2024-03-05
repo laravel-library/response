@@ -17,6 +17,7 @@ final class NoContentResponse implements Response
         return "noContent";
     }
 
+    #[Override]
     public function code(): int
     {
         return 204;

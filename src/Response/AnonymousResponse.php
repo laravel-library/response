@@ -25,7 +25,8 @@ final readonly class AnonymousResponse implements Response
             'exception' => get_class($this->throwable->getPrevious()),
             'file'      => $this->throwable->getFile(),
             'line'      => $this->throwable->getLine(),
-            'trace'     => Collection::make($this->throwable->getTrace())->map(fn(array $trace): array => Arr::except($trace, ['args'])),
+            'trace'     => Collection::make($this->throwable->getTrace())
+                ->map(fn(array $trace): array => Arr::except($trace, ['args'])),
         ];
     }
 
