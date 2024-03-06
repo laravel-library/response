@@ -12,12 +12,12 @@
   "require": {
     "php": "^8.3.0",
     "symfony/http-foundation": "^6.3",
-    "illuminate/support": "^10.46",
-    "illuminate/routing": "^10.46",
-    "illuminate/database": "^10.46",
-    "illuminate/validation": "^10.46",
-    "illuminate/auth": "^10.46",
-    "illuminate/foundation": "^10.46"
+    "illuminate/support": "^10.0",
+    "illuminate/routing": "^10.0",
+    "illuminate/database": "^10.0",
+    "illuminate/validation": "^10.0",
+    "illuminate/auth": "^10.0",
+    "illuminate/foundation": "^10.0"
   },
   "extra": {
     "laravel": {
