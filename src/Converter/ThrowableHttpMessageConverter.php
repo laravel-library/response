@@ -43,7 +43,10 @@ final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageCo
 
         return $this->isLocal() && $this->isEnabledDebug()
             ? $this->factory->toResponse(throwable: $throwable)
-            : $this->factory->toResponse($throwable->getMessage(), 500);
+            : $this->factory->toResponse(
+                $throwable->getMessage(),
+                $throwable->getCode() <= 0 ? 500 : $throwable->getCode()
+            );
     }
 
     private function isNotFoundException(Throwable $e): bool
