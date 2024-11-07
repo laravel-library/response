@@ -25,7 +25,7 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
     {
         $response = $this->container->get(Response::class);
 
-        $response->setContent($jsonResponse->original);
+        $response->setContent($jsonResponse->getContent());
 
         return $response;
     }
