@@ -22,7 +22,9 @@ final readonly class AnonymousResponse implements Response
         return [
             'msg'       => $this->throwable->getMessage(),
             'code'      => $this->isZeroStatus() ? $this->code() : $this->throwable->getCode(),
-            'exception' => get_class($this->throwable->getPrevious()),
+            'exception' => is_null($this->throwable->getPrevious())
+                ? \Exception::class
+                : get_class($this->throwable->getPrevious()),
             'file'      => $this->throwable->getFile(),
             'line'      => $this->throwable->getLine(),
             'trace'     => Collection::make($this->throwable->getTrace())
