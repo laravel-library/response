@@ -9,9 +9,9 @@ use Override;
 final readonly class ArrayHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
-    #[Override]
-    protected function write(Response|\Illuminate\Http\Response $body): Responsable
-    {
-        return $this->factory->toResponse($body->original);
-    }
+  #[Override]
+  protected function write(Response $body): Responsable
+  {
+    return $this->factory->toResponse(json_decode($body->getContent(), true));
+  }
 }

@@ -9,13 +9,9 @@ use Override;
 final readonly class StringHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
-    #[Override]
-    protected function write(Response $body): Responsable
-    {
-        $content = $body->getContent();
-
-        $responseData = json_validate($content) ? json_decode($content) : $content;
-
-        return $this->factory->toResponse($responseData);
-    }
+  #[Override]
+  protected function write(Response $body): Responsable
+  {
+    return $this->factory->toResponse($body->getContent());
+  }
 }

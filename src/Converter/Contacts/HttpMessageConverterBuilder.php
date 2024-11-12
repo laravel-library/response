@@ -2,12 +2,13 @@
 
 namespace Elephant\Response\Converter\Contacts;
 
-use Illuminate\Http\Response;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 interface HttpMessageConverterBuilder
 {
-    public function makeHttpMessageConverter(Response $response): HttpMessageConverter;
+  public function makeHttpMessageConverter(Response $response): HttpMessageConverter;
 
-    public function beforeBodyWrite(JsonResponse $jsonResponse): \Symfony\Component\HttpFoundation\Response|Response;
+  public function beforeBodyWrite(JsonResponse $jsonResponse): Response;
 }
