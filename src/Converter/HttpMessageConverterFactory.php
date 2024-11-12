@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\Container;
 use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 final readonly class HttpMessageConverterFactory implements Contacts\HttpMessageConverterBuilder
 {
@@ -38,10 +39,11 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
   private function getHttpMessageConverterClass(Response $response): string
   {
     return match (true) {
-      $response->hasException()           => ThrowableHttpMessageConverter::class,
-      $response->isArrayResponse()        => ArrayHttpMessageConverter::class,
-      $response->isNormalStringResponse() => StringHttpMessageConverter::class,
-      default                             => VoidHttpMessageConverter::class,
+      $response->exception instanceof Throwable  => ThrowableHttpMessageConverter::class,
+      json_validate($response->getContent())     => ArrayHttpMessageConverter::class,
+      is_string($response->getContent())
+      && !json_validate($response->getContent()) => StringHttpMessageConverter::class,
+      default                                    => VoidHttpMessageConverter::class,
     };
   }
 }
