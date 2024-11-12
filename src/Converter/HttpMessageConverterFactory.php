@@ -39,11 +39,16 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
   private function getHttpMessageConverterClass(Response $response): string
   {
     return match (true) {
-      $response->exception instanceof Throwable  => ThrowableHttpMessageConverter::class,
+      $this->isNotSymfonyResponse($response)     => ThrowableHttpMessageConverter::class,
       json_validate($response->getContent())     => ArrayHttpMessageConverter::class,
       is_string($response->getContent())
       && !json_validate($response->getContent()) => StringHttpMessageConverter::class,
       default                                    => VoidHttpMessageConverter::class,
     };
+  }
+
+  private function isNotSymfonyResponse(Response $response): bool
+  {
+    return get_class($response) !== Response::class && $response->exception instanceof Throwable;
   }
 }
