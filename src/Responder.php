@@ -16,11 +16,12 @@ trait  Responder
 
     public function __construct(mixed $data, int $code)
     {
-        $this->prepareResponse($data, $code);
+        $this->data = $data;
+        $this->code = $code;
     }
 
-    #[ArrayShape(['msg' => 'string', 'code' => 'integer', 'data' => 'mixed'])]
     #[Override]
+    #[ArrayShape(['msg' => 'string', 'code' => 'integer', 'data' => 'mixed'])]
     public function toResponse(): array
     {
         $response = ['msg' => $this->message(), 'code' => $this->code(), 'data' => null];
@@ -38,19 +39,4 @@ trait  Responder
         return $response;
     }
 
-    private function prepareResponse(mixed $data, int $code): void
-    {
-        if ($this->hasCustomCode($data)) {
-            $code = $data['code'];
-            unset($data['code']);
-        }
-
-        $this->data = $data;
-        $this->code = $code;
-    }
-
-    private function hasCustomCode(mixed $data): bool
-    {
-        return is_array($data) && isset($data['code']);
-    }
 }
