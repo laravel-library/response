@@ -7,7 +7,7 @@ namespace Elephant\Response;
 use Elephant\Response\Contacts\Response;
 use Override;
 
-final class CreatedResponse  implements Response
+final readonly class CreatedResponse  implements Response
 {
     use Responder;
 

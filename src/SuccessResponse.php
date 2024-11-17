@@ -8,7 +8,7 @@ use Elephant\Response\Contacts\Response;
 use JetBrains\PhpStorm\Pure;
 use Override;
 
-final class SuccessResponse implements Response
+final readonly class SuccessResponse implements Response
 {
     use Responder;
 
