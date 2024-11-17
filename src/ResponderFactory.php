@@ -1,13 +1,13 @@
 <?php
 
-namespace Elephant\Response\Response;
+namespace Elephant\Response;
 
-use Elephant\Response\Response\Contacts\Factory;
-use Elephant\Response\Response\Contacts\Response;
+use Elephant\Response\Contacts\Factory;
+use Elephant\Response\Contacts\Response;
 use Illuminate\Contracts\Container\Container;
+use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
-use Override;
 
 final class ResponderFactory implements Factory
 {

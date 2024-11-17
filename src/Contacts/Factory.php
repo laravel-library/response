@@ -1,6 +1,6 @@
 <?php
 
-namespace Elephant\Response\Response\Contacts;
+namespace Elephant\Response\Contacts;
 
 use Illuminate\Contracts\Container\Container;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Elephant\Response\Response;
+namespace Elephant\Response;
 
-use Elephant\Response\Response\Contacts\Response;
+use Elephant\Response\Contacts\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Override;

@@ -2,7 +2,7 @@
 
 namespace Elephant\Response\Converter;
 
-use Elephant\Response\Response\Contacts\Responsable;
+use Elephant\Response\Contacts\Responsable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;

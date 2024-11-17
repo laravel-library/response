@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Elephant\Response\Response;
+namespace Elephant\Response;
 
-use Elephant\Response\Response\Contacts\Response;
+use Elephant\Response\Contacts\Response;
 use JetBrains\PhpStorm\Pure;
 use Override;
 

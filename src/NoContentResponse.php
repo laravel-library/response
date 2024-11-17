@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Elephant\Response\Response;
+namespace Elephant\Response;
 
-use Elephant\Response\Response\Contacts\Response;
+use Elephant\Response\Contacts\Response;
 use Override;
 
-final class CreatedResponse  implements Response
+final class NoContentResponse implements Response
 {
     use Responder;
 
     #[Override]
     public function message(): string
     {
-        return "created";
+        return "noContent";
     }
 
     #[Override]
     public function code(): int
     {
-        return 201;
+        return 204;
     }
 }

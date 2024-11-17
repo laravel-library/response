@@ -1,6 +1,6 @@
 <?php
 
-namespace Elephant\Response\Response\Contacts;
+namespace Elephant\Response\Contacts;
 
 interface Response extends Responsable
 {

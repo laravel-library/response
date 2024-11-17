@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Elephant\Response;
 
+use Elephant\Response\Contacts\Factory;
 use Elephant\Response\Converter\Contacts\HttpMessageConverterBuilder;
 use Elephant\Response\Converter\HttpMessageConverterFactory;
 use Elephant\Response\Middleware\FormatResponseBodyAdvice;
-use Elephant\Response\Response\Contacts\Factory;
-use Elephant\Response\Response\ResponderFactory;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
