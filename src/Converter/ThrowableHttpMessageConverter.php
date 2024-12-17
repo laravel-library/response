@@ -16,51 +16,45 @@ use Throwable;
 final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageConverter
 {
 
-    #[Override]
-    protected function write(\Symfony\Component\HttpFoundation\Response|Response $body): Responsable
-    {
-        $throwable = $body->exception;
+	#[Override]
+	protected function write(\Symfony\Component\HttpFoundation\Response|Response $body): Responsable
+	{
+		$throwable = $body->exception;
 
-        if ($this->isNotFoundException($throwable)) {
-            return $this->factory->toResponse($throwable->getMessage(), 404);
-        }
+		if ($this->isNotFoundException($throwable)) {
+			return $this->factory->toResponse($throwable->getMessage(), 404);
+		}
 
-        if ($throwable instanceof ValidationException) {
-            return $this->factory->toResponse($throwable->validator->errors()->first(), 422);
-        }
+		if ($throwable instanceof ValidationException) {
+			return $this->factory->toResponse($throwable->validator->errors()->first(), 422);
+		}
 
-        if ($throwable instanceof MethodNotAllowedException) {
-            return $this->factory->toResponse($throwable->getMessage(), 405);
-        }
+		if ($throwable instanceof MethodNotAllowedException) {
+			return $this->factory->toResponse($throwable->getMessage(), 405);
+		}
 
-        if ($throwable instanceof AuthenticationException) {
-            return $this->factory->toResponse($throwable->getMessage(), 401);
-        }
+		if ($throwable instanceof AuthenticationException) {
+			return $this->factory->toResponse($throwable->getMessage(), 401);
+		}
 
-        if ($throwable instanceof HttpException) {
-            return $this->factory->toResponse($throwable->getMessage(), $throwable->getStatusCode());
-        }
+		if ($throwable instanceof HttpException) {
+			return $this->factory->toResponse($throwable->getMessage(), $throwable->getStatusCode());
+		}
 
-        return $this->isLocal() && $this->isEnabledDebug()
-            ? $this->factory->toResponse(throwable: $throwable)
-            : $this->factory->toResponse(
-                $throwable->getMessage(),
-                $throwable->getCode() <= 0 ? 500 : $throwable->getCode()
-            );
-    }
+		if ($this->isDevelopment() && $throwable->getCode() >= 500) {
+			return $this->factory->toResponse(throwable: $throwable);
+		}
 
-    private function isNotFoundException(Throwable $e): bool
-    {
-        return $e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException;
-    }
+		return $this->factory->toResponse($throwable->getMessage(), $throwable->getCode());
+	}
 
-    private function isLocal(): bool
-    {
-        return $this->factory->app()->get('env');
-    }
+	private function isNotFoundException(Throwable $e): bool
+	{
+		return $e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException;
+	}
 
-    private function isEnabledDebug(): bool
-    {
-        return $this->factory->app()->get('config')->get('app.debug');
-    }
+	private function isDevelopment(): bool
+	{
+		return $this->factory->app()->isLocal() && $this->factory->app()->get('config')->get('app.debug');
+	}
 }
