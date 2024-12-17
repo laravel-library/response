@@ -19,12 +19,12 @@ final class ElephantResponseServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             Factory::class,
-            fn(Container $app) => $app->make(ResponderFactory::class)
+            fn(Container $app) => new ResponderFactory($app->make('request'),$app)
         );
 
         $this->app->singleton(
             HttpMessageConverterBuilder::class,
-            fn(Container $app) => $app->make(HttpMessageConverterFactory::class)
+            fn(Container $app) => new HttpMessageConverterFactory($app)
         );
     }
 
