@@ -5,6 +5,7 @@ namespace Elephant\Response\Converter;
 use Elephant\Response\Contacts\Responsable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Override;
@@ -39,6 +40,10 @@ final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageCo
 
 		if ($throwable instanceof HttpException) {
 			return $this->factory->toResponse($throwable->getMessage(), $throwable->getStatusCode());
+		}
+
+		if ($throwable instanceof QueryException) {
+			$throwable = new \RuntimeException($throwable->getMessage(), 500, $throwable);
 		}
 
 		if ($this->isDevelopment() && $this->isBasicException($throwable)) {
