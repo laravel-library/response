@@ -41,11 +41,19 @@ final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageCo
 			return $this->factory->toResponse($throwable->getMessage(), $throwable->getStatusCode());
 		}
 
-		if ($this->isDevelopment() && $throwable->getCode() >= 500) {
-			return $this->factory->toResponse(throwable: $throwable);
+		if ($this->isDevelopment() && $this->isBasicException($throwable)) {
+
+			$statusCode = $throwable->getCode() >= 500 ? $throwable->getCode() : 500;
+
+			return $this->factory->toResponse(code: $statusCode, throwable: $throwable);
 		}
 
 		return $this->factory->toResponse($throwable->getMessage(), $throwable->getCode());
+	}
+
+	private function isBasicException(\Throwable $throwable): bool
+	{
+		return $throwable->getCode() >= 500 || $throwable->getCode() === 0;
 	}
 
 	private function isNotFoundException(Throwable $e): bool
