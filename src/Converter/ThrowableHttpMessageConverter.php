@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\Exceptions\MissingAbilityException;
 use Override;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -36,6 +37,10 @@ final readonly class ThrowableHttpMessageConverter extends AbstractHttpMessageCo
 
 		if ($throwable instanceof AuthenticationException) {
 			return $this->factory->toResponse($throwable->getMessage(), 401);
+		}
+
+		if ($throwable instanceof MissingAbilityException) {
+			return $this->factory->toResponse($throwable->getMessage(), 403);
 		}
 
 		if ($throwable instanceof HttpException) {

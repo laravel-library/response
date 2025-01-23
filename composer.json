@@ -11,6 +11,7 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^8.3",
+    "laravel/sanctum": "^4.0",
     "illuminate/support": "^11.30.0",
     "symfony/http-foundation": "^7.1.7",
     "illuminate/validation": "^11.30.0",
