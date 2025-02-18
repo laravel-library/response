@@ -23,6 +23,11 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
 	#[Override]
 	public function beforeBodyWrite(JsonResponse $jsonResponse): Response
 	{
+
+		if ($jsonResponse->exception instanceof Throwable) {
+            return $jsonResponse;
+        }
+
 		$response = $this->container->get(Response::class);
 
 		$response->setContent($jsonResponse->getContent());
