@@ -22,7 +22,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Elephant\\Response\\ElephantResponseServiceProvider"
+        "Elephant\\Response\\ServiceProvider"
       ]
     }
   },

@@ -5,28 +5,24 @@ declare(strict_types=1);
 namespace Elephant\Response\Converter;
 
 use Elephant\Response\Converter\Contacts\HttpMessageConverter;
+use Exception;
 use Illuminate\Contracts\Container\Container;
 use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
-final readonly class HttpMessageConverterFactory implements Contacts\HttpMessageConverterBuilder
+readonly class HttpMessageConverterFactory implements Contacts\HttpMessageConverterBuilder
 {
-	private Container $container;
 
-	public function __construct(Container $container)
-	{
-		$this->container = $container;
-	}
+	public function __construct(private Container $container) {}
 
 	#[Override]
-	public function beforeBodyWrite(JsonResponse $jsonResponse): Response
+	public function beforeBodyWrite(JsonResponse $symfonyResponse): Response
 	{
 
-		if ($jsonResponse->exception instanceof Throwable) {
-            return $jsonResponse;
-        }
+		if (property_exists($symfonyResponse,'exception') && $symfonyResponse->exception instanceof Exception) {
+			return $symfonyResponse;
+		}
 
 		$response = $this->container->get(Response::class);
 
@@ -47,8 +43,8 @@ final readonly class HttpMessageConverterFactory implements Contacts\HttpMessage
 			$this->isNotSymfonyResponse($response)     => ThrowableHttpMessageConverter::class,
 			json_validate($response->getContent())     => ArrayHttpMessageConverter::class,
 			is_string($response->getContent())
-			&& !empty($response->getContent())
-			&& !json_validate($response->getContent()) => StringHttpMessageConverter::class,
+				&& !empty($response->getContent())
+				&& !json_validate($response->getContent()) => StringHttpMessageConverter::class,
 			default                                    => VoidHttpMessageConverter::class,
 		};
 	}

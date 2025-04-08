@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Override;
 use Throwable;
 
-final readonly class AnonymousResponse implements Response
+readonly class AnonymousResponse implements Response
 {
     private Throwable $throwable;
 
