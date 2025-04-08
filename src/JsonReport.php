@@ -24,7 +24,7 @@ readonly class JsonReport implements Reportable
 		$response = ['message' => $message, 'status' => $status, 'data' => null];
 
 		if (json_validate($content)) {
-			$response['data'] = $content;
+			$response['data'] = json_decode($content, true);
 		} else if (is_string($content)) {
 			$response['message'] = $content;
 		}
