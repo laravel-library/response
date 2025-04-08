@@ -4,12 +4,15 @@ namespace Elephant\Response;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Exceptions\MissingAbilityException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,21 +21,34 @@ use Throwable;
 
 readonly class ThrowableReport implements Reportable
 {
+	public function __construct(private Application $app) {}
+
+	/**
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
 	public function report(JsonResponse|Throwable $response): array
 	{
 		$throwable = $this->wrap($response);
 
-		return [
-			'msg'       => $throwable->getMessage(),
-			'code'      => $throwable->getCode() <= 0 ? 500 : $throwable->getCode(),
-			'exception' => is_null($throwable->getPrevious())
-				? Exception::class
-				: get_class($throwable->getPrevious()),
-			'file'      => $throwable->getFile(),
-			'line'      => $throwable->getLine(),
-			'trace'     => Collection::make($throwable->getTrace())
-				->map(fn(array $trace): array => Arr::except($trace, ['args'])),
+		$struct = [
+			'message' => $throwable->getMessage(),
+			'code'    => $throwable->getCode() <= 0 ? 500 : $throwable->getCode(),
 		];
+
+		if ($this->app->isLocal() && $this->app->get('config')->get('app.debug')) {
+			return array_merge($struct, [
+				'exception' => is_null($throwable->getPrevious())
+					? Exception::class
+					: get_class($throwable->getPrevious()),
+				'file'      => $throwable->getFile(),
+				'line'      => $throwable->getLine(),
+				'trace'     => Collection::make($throwable->getTrace())
+					->map(fn(array $trace): array => Arr::except($trace, ['args'])),
+			]);
+		}
+
+		return $struct;
 	}
 
 	protected function wrap(Throwable $throwable): Throwable

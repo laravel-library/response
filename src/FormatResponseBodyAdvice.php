@@ -26,7 +26,7 @@ readonly class FormatResponseBodyAdvice
 		$response = $next($request);
 
 		if (property_exists($response, 'exception') && $response->exception instanceof Throwable) {
-			return $this->container->make('Reportable')->report($response->exception);
+			return new JsonResponse($this->container->make('Reportable')->report($response->exception));
 		}
 
 		return new JsonResponse($this->container->make(Reportable::class)->report($response));
