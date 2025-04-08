@@ -2,31 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Elephant\Response\Middleware;
+namespace Elephant\Response;
 
 use Closure;
-use Elephant\Response\Converter\Contacts\HttpMessageConverterBuilder;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 
 readonly class FormatResponseBodyAdvice
 {
-    public function __construct(private HttpMessageConverterBuilder $builder) {}
+	public function __construct(
+		private Container $container,
+	) {}
 
-    public function handle(Request $request, Closure $next): JsonResponse
-    {
+	/**
+	 * @throws BindingResolutionException
+	 */
+	public function handle(Request $request, Closure $next): JsonResponse
+	{
 
-        $response = $next($request);
+		$response = $next($request);
 
-        if ($response instanceof JsonResponse) {
-            $response = $this->builder->beforeBodyWrite($response);
-        }
+		if (property_exists($response, 'exception') && $response->exception instanceof Throwable) {
+			return $this->container->make('Reportable')->report($response->exception);
+		}
 
-        return new JsonResponse(
-            $this->builder
-                ->makeHttpMessageConverter($response)
-                ->writeValueAsJsonResponse($request, $response)
-                ->toResponse()
-        );
-    }
+		return new JsonResponse($this->container->make(Reportable::class)->report($response));
+	}
 }

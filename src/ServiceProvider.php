@@ -4,38 +4,26 @@ declare(strict_types=1);
 
 namespace Elephant\Response;
 
-use Elephant\Response\Contacts\Factory;
-use Elephant\Response\Converter\Contacts\HttpMessageConverterBuilder;
-use Elephant\Response\Converter\HttpMessageConverterFactory;
-use Elephant\Response\Middleware\FormatResponseBodyAdvice;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-final class ElephantResponseServiceProvider extends ServiceProvider
+final class ServiceProvider extends BaseServiceProvider
 {
-    public function register(): void
-    {
+	public function register(): void
+	{
+		$this->app->bind(Reportable::class, fn(Application $app): Reportable => new JsonReport($app['request']));
+		$this->app->alias(ThrowableReport::class, 'Reportable');
+	}
 
-        $this->app->singleton(
-            Factory::class,
-            fn(Container $app) => new ResponderFactory($app->make('request'),$app)
-        );
+	public function boot(Router $router): void
+	{
+		$this->registerMiddleware('body.advice', $router);
+	}
 
-        $this->app->singleton(
-            HttpMessageConverterBuilder::class,
-            fn(Container $app) => new HttpMessageConverterFactory($app)
-        );
-    }
-
-    public function boot(Router $router): void
-    {
-        $this->registerMiddleware('http.message.converter', $router);
-    }
-
-    protected function registerMiddleware(string $name, Router $router): void
-    {
-        $router->aliasMiddleware($name, FormatResponseBodyAdvice::class)
-            ->pushMiddlewareToGroup('api', $name);
-    }
+	protected function registerMiddleware(string $name, Router $router): void
+	{
+		$router->aliasMiddleware($name, FormatResponseBodyAdvice::class)
+			->pushMiddlewareToGroup('api', $name);
+	}
 }

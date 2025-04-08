@@ -32,7 +32,7 @@ composer require xgbnl/response dev-main
 
 ```json
 {
-  "msg": "noContent",
+  "msg": "deleted",
   "code": 204,
   "data": null
 }
