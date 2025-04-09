@@ -32,18 +32,16 @@ readonly class ThrowableReport implements Reportable
 		$throwable = $this->wrap($response);
 
 		$struct = [
-			'message' => $throwable->getMessage(),
-			'code'    => $throwable->getCode() <= 0 ? 500 : $throwable->getCode(),
+			'message' 	=> $throwable->getMessage(),
+			'status'    => $throwable->getCode(),
 		];
 
-		if ($this->app->isLocal() && $this->app->get('config')->get('app.debug')) {
+		if ($this->renderThrowableTrace() && $throwable->getCode() === 500) {
 			return array_merge($struct, [
-				'exception' => is_null($throwable->getPrevious())
-					? Exception::class
-					: get_class($throwable->getPrevious()),
+				'exception' => get_class($throwable->getPrevious()),
 				'file'      => $throwable->getFile(),
 				'line'      => $throwable->getLine(),
-				'trace'     => Collection::make($throwable->getTrace())
+				'trace'     => Collection::make($throwable->getPrevious()->getTrace())
 					->map(fn(array $trace): array => Arr::except($trace, ['args'])),
 			]);
 		}
@@ -65,9 +63,14 @@ readonly class ThrowableReport implements Reportable
 			$throwable instanceof ValidationException                                                   => [$throwable->validator->errors()->first(), 422],
 			$throwable instanceof HttpException                                                         => [$throwable->getMessage(), $throwable->getStatusCode()],
 			$throwable instanceof ModelNotFoundException || $throwable instanceof NotFoundHttpException => [$throwable->getMessage(), 404],
-			default                                                                                     => [$throwable->getMessage(), ($throwable->getCode() >= 500 ? $throwable->getCode() : 500)]
+			default                                                                                     => [$throwable->getMessage(), $throwable->getCode() >= 500 || $throwable->getCode() === 0 ? 500 : $throwable->getCode()]
 		};
 
-		return new Exception(current($errors), next($errors));
+		return new Exception(current($errors), next($errors), $throwable);
+	}
+
+	protected function renderThrowableTrace(): bool
+	{
+		return method_exists($this->app, 'isLocal') && $this->app->isLocal() && $this->app->get('config')->get('app.debug');
 	}
 }
