@@ -42,7 +42,7 @@ readonly class ThrowableReport implements Reportable
 				'file'      => $throwable->getFile(),
 				'line'      => $throwable->getLine(),
 				'trace'     => Collection::make($throwable->getPrevious()->getTrace())
-					->map(fn(array $trace): array => Arr::except($trace, ['args'])),
+					->map(fn(array $trace): array => Arr::except($trace, ['args','type'])),
 			]);
 		}
 
