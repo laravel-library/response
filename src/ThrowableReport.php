@@ -32,8 +32,8 @@ readonly class ThrowableReport implements Reportable
 		$throwable = $this->wrap($response);
 
 		$struct = [
-			'message' 	=> $throwable->getMessage(),
-			'status'    => $throwable->getCode(),
+			'msg' 	=> $throwable->getMessage(),
+			'code'  => $throwable->getCode(),
 		];
 
 		if ($this->renderThrowableTrace() && $throwable->getCode() === 500) {

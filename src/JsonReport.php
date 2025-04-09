@@ -21,12 +21,12 @@ readonly class JsonReport implements Reportable
 
 	private function render(mixed $content, int $status, string $message): array
 	{
-		$response = ['message' => $message, 'status' => $status, 'data' => null];
+		$response = ['msg' => $message, 'code' => $status, 'data' => null];
 
 		if (json_validate($content)) {
 			$response['data'] = json_decode($content, true);
 		} else if (is_string($content)) {
-			$response['message'] = $content;
+			$response['msg'] = $content;
 		}
 
 		return $response;
